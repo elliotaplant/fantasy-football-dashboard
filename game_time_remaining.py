@@ -31,9 +31,9 @@ def _construct_map(response_json):
             time_remaining = 0
 
         # Add the result to the map
-        time_remaining_map[competition_id] = (date, time_remaining)
+        time_remaining_map[competition_id] = (date, int(time_remaining))
         for team in teams:
-            time_remaining_map[team] = time_remaining
+            time_remaining_map[team] = int(time_remaining)
 
     # Patch for Oakland's move to LV
     time_remaining_map['OAK'] = time_remaining_map.get('LV', None)

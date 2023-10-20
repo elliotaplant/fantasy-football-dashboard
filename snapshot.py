@@ -2,6 +2,7 @@ from espn_api.football import League
 from game_time_remaining import game_time_remaining
 from config import LEAGUE_ID, ESPN_S2, SWID
 from storage import get_last_element, append_to_redis
+from nfl_week import get_current_nfl_week
 
 
 def generate_snapshot():
@@ -9,9 +10,7 @@ def generate_snapshot():
                     espn_s2=ESPN_S2, swid=SWID)
 
     # Get week with date
-    current_week = 7
-    week_start_date = '20231019'
-    week_end_date = '20231026'
+    current_week, week_start_date, week_end_date = get_current_nfl_week()
 
     box_scores = league.box_scores(current_week)
     time_remaining_map = game_time_remaining(week_start_date, week_end_date)
@@ -70,3 +69,5 @@ def store_snapshot(snapshot):
                     'score': matchup[team]['score']
                 }
                 append_to_redis(team_key, new_entry)
+                print(
+                    f"Updating key {team_key} with time {matchup[team]['time_remaining']} | score {matchup[team]['score']}")
