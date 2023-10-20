@@ -17,16 +17,16 @@ def _construct_map(response_json):
 
         # Calculate time remaining based on the status and other info
         if status == "pre":
-            time_remaining = 60
+            time_remaining = 60 * 60
         elif status == "in":
             if 'lastPlay' in event:
                 period = event['lastPlay']['period']
                 clock = event['lastPlay']['clock']
 
             if period < 4:
-                time_remaining = ((4 - period) * 15 * 60 + clock) / 60
+                time_remaining = (4 - period) * 15 * 60 + clock
             else:
-                time_remaining = clock / 60
+                time_remaining = clock
         else:
             time_remaining = 0
 
