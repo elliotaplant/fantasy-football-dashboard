@@ -1,4 +1,3 @@
-from snapshot import generate_snapshot, store_snapshot
+from snapshot import generate_snapshot
 
-snapshot = generate_snapshot()
-store_snapshot(snapshot)
+generate_snapshot()
