@@ -56,7 +56,8 @@ def generate_snapshot():
     for matchup in snapshot:
         matchup_key = f"{matchup['home']['team_id']}-{matchup['away']['team_id']}"
         for team in ["home", "away"]:
-            team_key = ':'.join([base_key, current_week, matchup_key, team])
+            team_key = ':'.join(
+                [base_key, str(current_week), matchup_key, team])
             last_element = get_last_element(team_key)
 
             if not last_element or last_element['time_remaining'] != matchup[team]['time_remaining']:
