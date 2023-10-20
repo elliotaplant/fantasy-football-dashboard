@@ -70,4 +70,4 @@ def store_snapshot(snapshot):
                 }
                 append_to_redis(team_key, new_entry)
                 print(
-                    f"Updating key {team_key} with time {matchup[team]['time_remaining']} | score {matchup[team]['score']}")
+                    f"Updating {(team_key, matchup[team]['time_remaining'], matchup[team]['score'])}")
