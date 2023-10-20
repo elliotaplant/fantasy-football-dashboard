@@ -14,14 +14,15 @@ def _construct_map(response_json):
         date = event['date']
 
         # If there's a 'lastPlay' key in the event, get the period and clock
-        if 'lastPlay' in event:
-            period = event['lastPlay']['period']
-            clock = event['lastPlay']['clock']
 
         # Calculate time remaining based on the status and other info
         if status == "pre":
             time_remaining = 60
         elif status == "in":
+            if 'lastPlay' in event:
+                period = event['lastPlay']['period']
+                clock = event['lastPlay']['clock']
+
             if period < 4:
                 time_remaining = ((4 - period) * 15 * 60 + clock) / 60
             else:

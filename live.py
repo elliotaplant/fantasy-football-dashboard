@@ -15,9 +15,9 @@ league = League(league_id=int(LEAGUE_ID), year=2023,
 
 
 # Get week with date
-current_week = 6
-week_start_date = '20231012'
-week_end_date = '20231017'
+current_week = 7
+week_start_date = '20231019'
+week_end_date = '20231026'
 
 box_scores = league.box_scores(current_week)
 time_remaining_map = game_time_remaining(week_start_date, week_end_date)
@@ -28,9 +28,6 @@ live_positions = {'QB', 'RB', 'WR', 'RB/WR/TE', 'TE', 'D/ST', 'K'}
 
 snapshot = []
 for matchup in box_scores:
-    if 'Kirk' in matchup.away_team.team_name:
-        print([(player, player.slot_position)
-              for player in matchup.away_lineup])
     home_time_remaining = 0
     home_current_score = 0
     home_live_players = [
@@ -51,18 +48,29 @@ for matchup in box_scores:
 
     snapshot.append({
         "home": {
+            "team_id": matchup.home_team.id,
             "name": matchup.home_team.team_name,
             "time_remaining": home_time_remaining,
             "score": home_current_score
         },
         "away": {
+            "team_id": matchup.away_team.id,
             "name": matchup.away_team.team_name,
             "time_remaining": away_time_remaining,
             "score": away_current_score
         }
     })
 
-print(datetime.now().isoformat(), snapshot)
-# Append to reddis key fantasy_dashboard:{week} [timestamp, snapshot]
-# Or maybe  fantasy_dashboard:{week} [{team: [{ time_remaining, points }]}]
-# https://site.api.espn.com/apis/fantasy/v2/games/ffl/games?useMap=true&dates=20231012-20231017&pbpOnly=true
+# Write snapshot to redis where each
+base_key = "fantasy-dashboard" 
+for matchup in snapshot:
+    matchup_key = f"{matchup['home']['team_id']}-{matchup['home']['team_id']}"
+    for team in ["home", "away"]:
+        team_key = ':'.join([base_key, matchup_key, team])
+
+        # Get last element of list at team_key
+        # Parse it as JSON
+        if last_element['time_remaining'] != matchup["time_remaining"]:
+                # append JSON.stringify({ time_remaining: matchup[team]['time_remaining'], score: matchup[team]['score'] })
+
+
